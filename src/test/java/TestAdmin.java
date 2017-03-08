@@ -66,4 +66,11 @@ public class TestAdmin {
         this.admin.createClass("Test5", 2016, "Instructor", 15);
         assertFalse(this.admin.classExists("Test5", 2016));     // we  don't want classes in the past
     }
+
+    @Test
+    public void testTwoClassesOneInstructor() {
+        this.admin.createClass("Test", 2017, "Instructor", 10);
+        this.admin.createClass("Test class 2", 2017, "Instructor", 15);
+        assertFalse(this.admin.classExists("Test class 2", 2017));
+    }
 }

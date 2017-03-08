@@ -59,32 +59,35 @@ public class TestInstructor {
     public void testGrade() {
         this.instructor.addHomework("Professor Test", "Test Class", 2017, "homework1", "super hard homework");
         this.student.registerForClass("good student", "Test Class", 2017);
+        this.student.submitHomework("good student", "homework1", "answer", "Test Class", 2017);
         this.instructor.assignGrade("Professor Test", "Test Class", 2017, "homework1", "good student", 99);
         assertTrue(this.instructor.getGrade("Test Class", 2017, "homework1", "good student").intValue() == 99);
     }
 
     @Test
-    public void testGradeNullWrongStudent() {
+    public void testGradeNoSubmission() {
         this.instructor.addHomework("Professor Test", "Test Class", 2017, "homework1", "super hard homework");
         this.student.registerForClass("good student", "Test Class", 2017);
         this.instructor.assignGrade("Professor Test", "Test Class", 2017, "homework1", "good student", 99);
-        assertTrue(this.instructor.getGrade("Test Class", 2017, "homework1", "bad student") == null);
+        assertTrue(this.instructor.getGrade("Test Class", 2017, "homework1", "good student") == null);
     }
 
     @Test
-    public void testGradeNullWrongClass() {
+    public void testGradeInvalidScore() {
         this.instructor.addHomework("Professor Test", "Test Class", 2017, "homework1", "super hard homework");
         this.student.registerForClass("good student", "Test Class", 2017);
-        this.instructor.assignGrade("Professor Test", "Test Class", 2017, "homework1", "good student", 99);
-        assertTrue(this.instructor.getGrade("Test Class 2", 2017, "homework1", "good student") == null);
+        this.student.submitHomework("good student", "homework1", "answer", "Test Class", 2017);
+        this.instructor.assignGrade("Professor Test", "Test Class", 2017, "homework1", "good student", -10);
+        assertTrue(this.instructor.getGrade("Test Class", 2017, "homework1", "good student") == null);
     }
 
     @Test
-    public void testGradeNullWrongYear() {
+    public void testGradeInstructorNotAssigned() {
         this.instructor.addHomework("Professor Test", "Test Class", 2017, "homework1", "super hard homework");
         this.student.registerForClass("good student", "Test Class", 2017);
-        this.instructor.assignGrade("Professor Test", "Test Class", 2017, "homework1", "good student", 99);
-        assertTrue(this.instructor.getGrade("Test Class", 2016, "homework1", "bad student") == null);
+        this.student.submitHomework("good student", "homework1", "answer", "Test Class", 2017);
+        this.instructor.assignGrade("NOT Professor Test", "Test Class", 2017, "homework1", "good student", 99);
+        assertTrue(this.instructor.getGrade("Test Class", 2017, "homework1", "good student") == null);
     }
 
 }
